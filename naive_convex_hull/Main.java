@@ -86,6 +86,7 @@ public class Main {
     return true;
   }
 
+  //return true if p is to the left of the line segment ab
   public static boolean isLeftOf(Point a, Point b, Point p){
     int aX = a.getX();
     int aY = a.getY();
