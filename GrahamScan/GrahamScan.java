@@ -1,5 +1,6 @@
 import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Stack;
 
 /*
   resource for sorting with a comparator (accessed feb 23rd):
@@ -7,20 +8,44 @@ import java.util.ArrayList;
 */
 public class GrahamScan {
 
+  //static Point anchor = null;
+
   public static void main(String[] args){
 
-    //TODO: populate points using command line args/circle
 
-    Point [] points = new Point[10];
+    Point [] points = new Point[18];
+    points[0] = new Point(2,10);
+    points[1] = new Point(4,15);
+    points[2] = new Point(5,7);
+    points[3] = new Point(6,11);
+    points[4] = new Point(12,18);
+    points[5] = new Point(12,5);
+    points[6] = new Point(17,11);
+    points[7] = new Point(8,5);
+    points[8] = new Point(9,9);
+    points[9] = new Point(13,13);
+    points[10] = new Point(7,2);
+    points[11] = new Point(3,3);
+    points[12] = new Point(7,16);
+    points[13] = new Point(10,17);
+    points[14] = new Point(15,15);
+    points[15] = new Point(15,8);
+    points[16] = new Point(13,3);
+    points[17] = new Point(10,13);
 
     Point anchor = getBottomRight(points);
+    System.out.println("anchor: "+ anchor);
+    Arrays.sort(points, new PointComparator(anchor)); //anchor should be in here
+    ArrayList<Point> hullPoints = new ArrayList<Point>(); //TODO: implement with stack
 
-    Arrays.sort(points, new PointComparator()); //anchor should be in here
-    ArrayList<Point> hullPoints = new ArrayList<Point>();
+    for(int i = 0; i< points.length; i++){
+      System.out.println(points[i]);
+    }
+
     hullPoints.add(anchor); //adding the first point
     hullPoints.add(points[1]); //hull has this point as well TODO: is this right?
-
-    for(i = 2; i < points.length; i ++){
+/*
+    for(int i = 2; i < points.length; i ++){
       int size = hullPoints.size();
       if(isLeftOf(hullPoints.get(size-2),hullPoints.get(size-1),points[i])){
         hullPoints.add(points[i]);
@@ -33,31 +58,32 @@ public class GrahamScan {
         // rightPoint = points[i]
         // delete everything from hullPoints not to the right of line segment rightPointa
       }
-    }
+    }*/
 
   }
 
-  public Point getAnchor(){ //......
-    return anchor;
-  }
+//  public static Point getAnchor(){ //......
+  //  return anchor;
+//  }
 
   public static Point getBottomRight(Point[] points){
-    Array of points [points]
+  //  Array of points [points]
     Point anchor = points[0]; //bottommost right
-    brX = anchor.getX();
-    brY = anchor.getY();
+    int brX = anchor.getX();
+    int brY = anchor.getY();
 
     for(int i = 1; i <points.length;i++){
-      Point ptTmp = points.get(i);
-      Point ptTmpX = ptTmp.getX();
-      Point ptTmpY = ptTmp.getY();
+      Point ptTmp = points[i];
+      int ptTmpX = ptTmp.getX();
+      int ptTmpY = ptTmp.getY();
 
-      if(ptTmpX > brX && ptTmpY < brY){
+      if(ptTmpY < brY){
         anchor = ptTmp;
-        anchor = ptTmpX;
-        anchor = ptTmpY;
+        brX = ptTmpX;
+        brY = ptTmpY;
       }
     }
+    return anchor;
   }
   //return true if p is to the left of the line segment ab
   public static boolean isLeftOf(Point a, Point b, Point p){

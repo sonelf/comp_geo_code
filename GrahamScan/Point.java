@@ -1,3 +1,5 @@
+import java.lang.Math;
+
 public class Point {
   private int x;
   private int y;
@@ -18,5 +20,12 @@ public class Point {
   }
   public boolean equals(Point p){
     return p.getX() == x && p.getY() == y;
+  }
+
+  public double distance(Point p){
+    int pX = p.getX();
+    int pY = p.getY();
+
+    return Math.sqrt(Math.pow(pX-x,2)+Math.pow(pY-y,2));
   }
 }
