@@ -36,7 +36,8 @@ public class GrahamScan {
 
     Point anchor = getBottomRight(points);
     System.out.println("anchor: "+ anchor);
-    Arrays.sort(points, new PointComparator(anchor)); //anchor should be in here
+    PointComparator pc = new PointComparator(anchor);
+    Arrays.sort(points, pc); //anchor should be in here
     ArrayList<Point> hullPoints = new ArrayList<Point>(); //TODO: implement with stack
 
    for(int i = 0; i< points.length; i++){

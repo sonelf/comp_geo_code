@@ -3,6 +3,7 @@ import java.util.Comparator;
 
 public class PointComparator implements Comparator<Point>{
 // help with angular sort: https://en.wikipedia.org/wiki/Graham_scan
+// https://stackoverflow.com/questions/16509100/sorting-points-by-their-polar-angle-in-java
   private Point anchor; //= new Point(7,2);
 
   public PointComparator(Point anchor){
@@ -44,14 +45,15 @@ public class PointComparator implements Comparator<Point>{
   //  System.out.println("angle between " + a + "is: "+ angleA);
   //  System.out.println("angle between " + b + "is: "+ angleB);
 
-    if(angleA > angleB){
-      System.out.println(angleA + "is greater than " + angleB);
-      return 1;
-    }
-    else if (angleB < angleA){
-      System.out.println(angleB + "is greater than " + angleA);
+    if(angleA - angleB > 0){
+      //System.out.println(angleA + " from "+ a + "is greater than " + angleB + " from "+ b);
       return -1;
     }
+    else if (angleA - angleB < 0){
+    //  System.out.println(angleB + "is greater than " + angleA);
+      return 1;
+    }
+    //System.out.println("RETURNING 0: "+a +": " + angleA +" , "+ b + ": "+ angleB +" is over here.");
     return 0;
   }
 
