@@ -3,58 +3,60 @@ import java.util.Comparator;
 
 public class PointComparator implements Comparator<Point>{
 // help with angular sort: https://en.wikipedia.org/wiki/Graham_scan
-  private Point anchor;
+  private Point anchor; //= new Point(7,2);
 
   public PointComparator(Point anchor){
     this.anchor = anchor;
   }
   //returns positive value if a's angle is greater than b's (want it in reverse order)
-  @Override
+  //@Override
+
   public int compare(Point a, Point b){
 
-    double angleA = getAngleWithAnchor(a);
-    double angleB = getAngleWithAnchor(b);
+   double anchorX = (double) anchor.getX();
+   double anchorY = (double) anchor.getY();
 
-    System.out.println("angle between " + a + "is: "+ angleA);
-    System.out.println("angle between " + b + "is: "+ angleB);
+   double aX = (double) a.getX();
+   double aY = (double) a.getY();
 
-    return (int) (angleA-angleB); //TODO: not correct
-  }
+   double bX = (double) b.getX();
+   double bY = (double) b.getY();
 
-  //calculates the angle between the line between the p and the anchor,
-  // with y = b, where b = the y coordinate of the anchor
-  public double getAngleWithAnchor(Point p){
-    if(p.getX() == anchor.getX()){
-      return 0;
+   //double angleA = Math.atan((aY-anchorY)/(anchorX-aX));
+   // double angleB = Math.atan((bY-anchorY)/(anchorX-bX));
+
+    double angleA;
+    if(a.equals(anchor)){
+      angleA = 0;
+    }
+    else{
+      angleA = ((aX-anchorX)/(aY-anchorY));
     }
 
-    else if(p.getX() < anchor.getX()){
-      Point tmpPoint = new Point(p.getX(),anchor.getY());
-      double adj = anchor.distance(tmpPoint);
-      double opp = p.distance(tmpPoint);
-
-      //System.out.println("distances: ");
-      //System.out.println(opp);
-      //System.out.println(adj);
-      return Math.atan(Math.tan(opp/adj));
-      //return Math.atan(opp/adj);
+    double angleB;
+    if(b.equals(anchor)){
+      angleB = 0;
+    }
+    else{
+      angleB =((bX-anchorX)/(bY-anchorY));
     }
 
-    double t1Hyp = anchor.distance(p);
-    //kind of hard to explain without the geometry,
-    //but basically, i am breaking up the angle into two with right triangles,
-    //and then adding them together
+  //  System.out.println("angle between " + a + "is: "+ angleA);
+  //  System.out.println("angle between " + b + "is: "+ angleB);
 
-    Point tmpAdjPt = new Point(anchor.getX(),p.getY());
-    double t1Adj = anchor.distance(tmpAdjPt);
-
-    //System.out.println(t1Adj/t1Hyp);
-    double angle1 = Math.acos(Math.cos(t1Adj/t1Hyp));
-    //System.out.println("angle1 arc cos: "+ angle1);
-    return (double) angle1 + 1.5708;
-
-
+    if(angleA > angleB){
+      System.out.println(angleA + "is greater than " + angleB);
+      return 1;
+    }
+    else if (angleB < angleA){
+      System.out.println(angleB + "is greater than " + angleA);
+      return -1;
+    }
+    return 0;
   }
 
+  public Point getAnchor(){
+    return anchor;
+  }
 
 }

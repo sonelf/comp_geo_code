@@ -28,4 +28,13 @@ public class Point {
 
     return Math.sqrt(Math.pow(pX-x,2)+Math.pow(pY-y,2));
   }
+
+  public int dotProduct(Point p){
+    return (x*p.getX())+(y*p.getY());
+  }
+
+  public double magnitude(){
+    return Math.sqrt(Math.pow(x,2)+Math.pow(y,2));
+  }
+
 }

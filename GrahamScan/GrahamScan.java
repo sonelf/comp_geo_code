@@ -14,7 +14,8 @@ public class GrahamScan {
 
 
     Point [] points = new Point[18];
-    points[0] = new Point(2,10);
+    points[0] = new Point(7,16);
+    points[12] = new Point(2,10);
     points[1] = new Point(4,15);
     points[2] = new Point(5,7);
     points[3] = new Point(6,11);
@@ -26,7 +27,7 @@ public class GrahamScan {
     points[9] = new Point(13,13);
     points[10] = new Point(7,2);
     points[11] = new Point(3,3);
-    points[12] = new Point(7,16);
+
     points[13] = new Point(10,17);
     points[14] = new Point(15,15);
     points[15] = new Point(15,8);
@@ -38,7 +39,7 @@ public class GrahamScan {
     Arrays.sort(points, new PointComparator(anchor)); //anchor should be in here
     ArrayList<Point> hullPoints = new ArrayList<Point>(); //TODO: implement with stack
 
-    for(int i = 0; i< points.length; i++){
+   for(int i = 0; i< points.length; i++){
       System.out.println(points[i]);
     }
 
