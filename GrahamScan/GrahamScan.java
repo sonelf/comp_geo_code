@@ -12,28 +12,57 @@ public class GrahamScan {
 
   public static void main(String[] args){
 
+    Point [] pointsCase1 = new Point[18];
+    pointsCase1[0] = new Point(7,16);
+    pointsCase1[1] = new Point(4,15);
+    pointsCase1[2] = new Point(5,7);
+    pointsCase1[3] = new Point(6,11);
+    pointsCase1[4] = new Point(12,18);
+    pointsCase1[5] = new Point(12,5);
+    pointsCase1[6] = new Point(17,11);
+    pointsCase1[7] = new Point(8,5);
+    pointsCase1[8] = new Point(9,9);
+    pointsCase1[9] = new Point(13,13);
+    pointsCase1[10] = new Point(7,2);
+    pointsCase1[11] = new Point(3,3);
+    pointsCase1[12] = new Point(2,10);
+    pointsCase1[13] = new Point(10,17);
+    pointsCase1[14] = new Point(15,15);
+    pointsCase1[15] = new Point(15,8);
+    pointsCase1[16] = new Point(13,3);
+    pointsCase1[17] = new Point(10,13);
 
-    Point [] points = new Point[18];
-    points[0] = new Point(7,16);
-    points[12] = new Point(2,10);
-    points[1] = new Point(4,15);
-    points[2] = new Point(5,7);
-    points[3] = new Point(6,11);
-    points[4] = new Point(12,18);
-    points[5] = new Point(12,5);
-    points[6] = new Point(17,11);
-    points[7] = new Point(8,5);
-    points[8] = new Point(9,9);
-    points[9] = new Point(13,13);
-    points[10] = new Point(7,2);
-    points[11] = new Point(3,3);
+    Stack<Point> hullCase1 = getHull(pointsCase1);
+    System.out.println(hullCase1);
 
-    points[13] = new Point(10,17);
-    points[14] = new Point(15,15);
-    points[15] = new Point(15,8);
-    points[16] = new Point(13,3);
-    points[17] = new Point(10,13);
+    Point[] pointsCase2 = new Point[8];
+    pointsCase2[0] = new Point(2,10);
+    pointsCase2[1] = new Point(3,3);
+    pointsCase2[2] = new Point(4,15);
+    pointsCase2[3] = new Point(7,2);
+    pointsCase2[4] = new Point(12,18);
+    pointsCase2[5] = new Point(13,3);
+    pointsCase2[6] = new Point(15,15);
+    pointsCase2[7] = new Point(17,11);
 
+    Stack<Point> hullCase2 = getHull(pointsCase2); //should be same hull as case 1
+    System.out.println(hullCase2);
+
+    Point[] pointsCase3 = new Point[7];
+    pointsCase3[0] = new Point(1,1);
+    pointsCase3[1] = new Point(21,1);
+    pointsCase3[2] = new Point(10,20);
+    pointsCase3[3] = new Point(5,5);
+    pointsCase3[4] = new Point(2,2);
+    pointsCase3[5] = new Point(3,3);
+    pointsCase3[6] = new Point(15,5);
+
+    Stack<Point> hullCase3 = getHull(pointsCase3); //should be same hull as case 1
+    System.out.println(hullCase3);
+
+  }
+
+  public static Stack<Point> getHull (Point[] points){
     Point anchor = getBottomRight(points);
     System.out.println("anchor: "+ anchor);
     PointComparator pc = new PointComparator(anchor);
@@ -75,11 +104,8 @@ public class GrahamScan {
           hullPoints.push(points[i]);
         }
       }
-      System.out.println(hullPoints);
-      System.out.println(hullPoints.size());
-    }
-
-
+      return hullPoints;
+  }
 
   public static Point getBottomRight(Point[] points){
   //  Array of points [points]
