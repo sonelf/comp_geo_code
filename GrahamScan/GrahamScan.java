@@ -38,50 +38,60 @@ public class GrahamScan {
     System.out.println("anchor: "+ anchor);
     PointComparator pc = new PointComparator(anchor);
     Arrays.sort(points, pc); //anchor should be in here
-    ArrayList<Point> hullPoints = new ArrayList<Point>(); //TODO: implement with stack
 
-   for(int i = 0; i< points.length; i++){
-      System.out.println(points[i]);
-    }
+    Stack<Point> hullPoints = new Stack<Point>();
 
-    hullPoints.add(anchor); //adding the first point
-    hullPoints.add(points[1]); //hull has this point as well TODO: is this right?
-/*
-    for(int i = 2; i < points.length; i ++){
-      int size = hullPoints.size();
-      if(isLeftOf(hullPoints.get(size-2),hullPoints.get(size-1),points[i])){
-        hullPoints.add(points[i]);
+    hullPoints.push(anchor);
+    hullPoints.push(points[0]); //there are at least two elements in the convex hull
+
+    //System.out.println(hullPoints.size());
+
+    Point lineA = anchor;
+    Point lineB = points[0];
+    for(int i = 1; i < points.length; i ++){
+      if(points[i].equals(anchor)) continue;
+
+      if(isLeftOf(lineA,lineB,points[i])){
+        hullPoints.push(points[i]);
+        lineA = lineB;
+        lineB = points[i];
       }
-      else if(isOnLine(hullPoints.get(size-2),hullPoints.get(size-1),points[i])){
+      else if(isOnLine(lineA,lineB,points[i])){
         continue;
       }
-      else{
-        //go back and delete everything that should not be in the hull
-        // rightPoint = points[i]
-        // delete everything from hullPoints not to the right of line segment rightPointa
+      else{ //is to the right
+          //System.out.println("to the right: "+points[i]);
+          //pop things from the stack until we it is no longer to the isLeft
+          lineB = points[i];
+          Point testElement = hullPoints.pop();
+
+          while (isLeftOf(lineA, lineB, testElement)) {
+            testElement = hullPoints.pop();
+            lineA = hullPoints.peek();
+          }
+          hullPoints.push(testElement);
+          //reset the A line segment
+          lineA = testElement;
+          hullPoints.push(points[i]);
+        }
       }
-    }*/
+      System.out.println(hullPoints);
+      System.out.println(hullPoints.size());
+    }
 
-  }
 
-//  public static Point getAnchor(){ //......
-  //  return anchor;
-//  }
 
   public static Point getBottomRight(Point[] points){
   //  Array of points [points]
     Point anchor = points[0]; //bottommost right
-    int brX = anchor.getX();
     int brY = anchor.getY();
 
     for(int i = 1; i <points.length;i++){
       Point ptTmp = points[i];
-      int ptTmpX = ptTmp.getX();
       int ptTmpY = ptTmp.getY();
 
       if(ptTmpY < brY){
         anchor = ptTmp;
-        brX = ptTmpX;
         brY = ptTmpY;
       }
     }
