@@ -31,6 +31,7 @@ public class GrahamScan {
     pointsCase1[15] = new Point(15,8);
     pointsCase1[16] = new Point(13,3);
     pointsCase1[17] = new Point(10,13);
+    //TODO
 
     Stack<Point> hullCase1 = getHull(pointsCase1);
     System.out.println(hullCase1);
