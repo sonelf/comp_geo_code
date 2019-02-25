@@ -48,14 +48,15 @@ public class GrahamScan {
     Stack<Point> hullCase2 = getHull(pointsCase2); //should be same hull as case 1
     System.out.println(hullCase2);
 
-    Point[] pointsCase3 = new Point[7];
+    Point[] pointsCase3 = new Point[8];
     pointsCase3[0] = new Point(1,1);
     pointsCase3[1] = new Point(21,1);
-    pointsCase3[2] = new Point(10,20);
+    pointsCase3[2] = new Point(11,23);
     pointsCase3[3] = new Point(5,5);
     pointsCase3[4] = new Point(2,2);
     pointsCase3[5] = new Point(3,3);
     pointsCase3[6] = new Point(15,5);
+    pointsCase3[7] = new Point(6,12);
 
     Stack<Point> hullCase3 = getHull(pointsCase3); //should be same hull as case 1
     System.out.println(hullCase3);
@@ -64,19 +65,20 @@ public class GrahamScan {
 
   public static Stack<Point> getHull (Point[] points){
     Point anchor = getBottomRight(points);
-    System.out.println("anchor: "+ anchor);
-    PointComparator pc = new PointComparator(anchor);
-    Arrays.sort(points, pc); //anchor should be in here
+    Arrays.sort(points,  new PointComparator(anchor)); //anchor should be in here
+    return generateHull(points,anchor);
+  }
 
+  public static Stack<Point> generateHull(Point[] points, Point anchor){
     Stack<Point> hullPoints = new Stack<Point>();
 
+    points = removeDuplicateAngles(points, anchor);
     hullPoints.push(anchor);
     hullPoints.push(points[0]); //there are at least two elements in the convex hull
 
-    //System.out.println(hullPoints.size());
-
-    Point lineA = anchor;
+    Point lineA = anchor; //to keep track of line segment AB
     Point lineB = points[0];
+
     for(int i = 1; i < points.length; i ++){
       if(points[i].equals(anchor)) continue;
 
@@ -165,6 +167,34 @@ public class GrahamScan {
     return pY < tmpY;
   }
 
+  public static Point[] removeDuplicateAngles(Point[] points, Point anchor){
+    ArrayList<Point> tmp = new ArrayList<Point>();
+    PointComparator pc = new PointComparator(anchor);
+    for(int i = 0; i < points.length -1 ; i++){
+      Point pt1 = points[i];
+      Point pt2 = points[i+1];
+      if(pc.compare(pt1, pt2) == 0){
+        System.out.println("duplicates "+ pt1 + "   "+pt2);
+        if(pt1.magnitude() > pt2.magnitude()){
+          tmp.add(pt1);
+
+        }
+        else{
+          tmp.add(pt2);
+        }
+        i++;
+      }
+      else{
+        tmp.add(pt1);
+      }
+    }
+    //System.out.println("new array: ");
+    //System.out.println(tmp);
+    //System.out.println("end");
+    return points;
+    //return tmp.toArray(new Point[tmp.size()]); //TODO: this is a bug for case 1: it removes 3,3
+
+  }
   //return true if p is on the line segment ab
   public static boolean isOnLine(Point a, Point b, Point p){
     int aX = a.getX();
@@ -181,7 +211,6 @@ public class GrahamScan {
       return pX == aX;
 
     }
-
     // creating the line we use to compare p against
     double rise = (double)(bY-aY); //delta Y for line
     double slope = rise/run;
