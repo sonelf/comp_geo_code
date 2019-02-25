@@ -48,7 +48,7 @@ public class PointComparator implements Comparator<Point>{
       return 1;
     }
     return 0;
- }
+  }
 
   public Point getAnchor(){
     return anchor;

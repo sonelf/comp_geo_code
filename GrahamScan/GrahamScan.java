@@ -61,6 +61,8 @@ public class GrahamScan {
     Stack<Point> hullCase3 = getHull(pointsCase3); //should be same hull as case 1
     System.out.println(hullCase3);
 
+    //TODO: do random cases
+
   }
 
   public static Stack<Point> getHull (Point[] points){
@@ -174,7 +176,6 @@ public class GrahamScan {
       Point pt1 = points[i];
       Point pt2 = points[i+1];
       if(pc.compare(pt1, pt2) == 0){
-        System.out.println("duplicates "+ pt1 + "   "+pt2);
         if(pt1.magnitude() > pt2.magnitude()){
           tmp.add(pt1);
         }
@@ -190,7 +191,7 @@ public class GrahamScan {
         }
       }
     }
-    //System.out.println("new array: ");
+    //System.out.println("new array: "); //TODO: delete
     //System.out.println(tmp);
     //System.out.println("end");
     //return points;
