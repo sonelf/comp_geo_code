@@ -23,7 +23,6 @@ public class GrahamScan {
         brY = ptTmpY;
       }
     }
-//comment
   }
 
 
