@@ -177,7 +177,6 @@ public class GrahamScan {
         System.out.println("duplicates "+ pt1 + "   "+pt2);
         if(pt1.magnitude() > pt2.magnitude()){
           tmp.add(pt1);
-
         }
         else{
           tmp.add(pt2);
@@ -186,14 +185,16 @@ public class GrahamScan {
       }
       else{
         tmp.add(pt1);
+        if(i == points.length -2){ //TODO: this fix is too hacky
+          tmp.add(pt2);
+        }
       }
     }
     //System.out.println("new array: ");
     //System.out.println(tmp);
     //System.out.println("end");
-    return points;
-    //return tmp.toArray(new Point[tmp.size()]); //TODO: this is a bug for case 1: it removes 3,3
-
+    //return points;
+    return tmp.toArray(new Point[tmp.size()]);
   }
   //return true if p is on the line segment ab
   public static boolean isOnLine(Point a, Point b, Point p){
