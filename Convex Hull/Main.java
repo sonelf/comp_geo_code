@@ -1,15 +1,9 @@
-import java.lang.Integer;
-import java.lang.Math;
-import java.lang.System;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.HashMap;
-import java.lang.Double;
-import java.lang.Boolean;
+public class Main{
 
-public class Main {
 
-  public static final int R = 10000000;
+  public static final int R = 100000000;
   public static final int FIRST_ELEMENT_IDX = 0;
 
   public static void main (String[] args){
@@ -34,8 +28,8 @@ public class Main {
     pointsCase1.add(new Point(13,3));
     pointsCase1.add(new Point(10,13));
 
-    computeHull(pointsCase1);
-
+    NaiveHull.computeHull(pointsCase1, true);
+    GrahamScan.computeHull(pointsCase1.toArray(new Point[pointsCase1.size()]), true);
 
     ArrayList<Point> pointsCase2 = new ArrayList<Point>();
     pointsCase2.add(new Point(8, 5));
@@ -48,17 +42,46 @@ public class Main {
     pointsCase2.add(new Point(-4, 8));
     pointsCase2.add(new Point(3, -9));
 
-    computeHull(pointsCase2);
+  //  NaiveHull.computeHull(pointsCase2, true);
+    //GrahamScan.computeHull(pointsCase2.toArray(new Point[pointsCase2.size()]), true);
 
-    ArrayList<Point> pointsTestRandom1 = getRandomPoints(10);
-    System.out.println(pointsTestRandom1);
-    computeHull(pointsTestRandom1);
+    ArrayList<Point> pointsCase3 = new ArrayList<Point>();
+    pointsCase3.add(new Point(2, 2));
+    pointsCase3.add(new Point(-2, 2));
+    pointsCase3.add(new Point(4, 4));
+    pointsCase3.add(new Point(-4, 4));
+    pointsCase3.add(new Point(6, 6));
+    pointsCase3.add(new Point(-6, 6));
+    pointsCase3.add(new Point(8, 8));
+    pointsCase3.add(new Point(-8, 8));
+    pointsCase3.add(new Point(10, 1));
+    pointsCase3.add(new Point(0, 0));
 
-    ArrayList<Point> pointsTestRandom2 = getRandomPoints(10000);
-    computeHull(pointsTestRandom2);
 
-    ArrayList<Point> pointsTestRandom3 = getRandomPoints(40000);
-    computeHull(pointsTestRandom3);
+    //NaiveHull.computeHull(pointsCase3, true);
+    //GrahamScan.computeHull(pointsCase3.toArray(new Point[pointsCase3.size()]), true);
+
+    ArrayList<Point> pointsTestRandom1 = getRandomPoints(100);
+    //NaiveHull.computeHull(pointsTestRandom1, false);
+    //GrahamScan.computeHull(pointsTestRandom1.toArray(new Point[pointsTestRandom1.size()]), false);
+
+    ArrayList<Point> pointsTestRandom2 = getRandomPoints(1000);
+    //NaiveHull.computeHull(pointsTestRandom2, false);
+    //GrahamScan.computeHull(pointsTestRandom2.toArray(new Point[pointsTestRandom2.size()]), false);
+
+    ArrayList<Point> pointsTestRandom3 = getRandomPoints(10000);
+    //NaiveHull.computeHull(pointsTestRandom3, false);
+    //GrahamScan.computeHull(pointsTestRandom3.toArray(new Point[pointsTestRandom3.size()]), false);
+
+    ArrayList<Point> pointsTestRandom4 = getRandomPoints(20000);
+    //NaiveHull.computeHull(pointsTestRandom4, false);
+  //  GrahamScan.computeHull(pointsTestRandom4.toArray(new Point[pointsTestRandom4.size()]), false);
+
+    ArrayList<Point> pointsTestRandom5 = getRandomPoints(100000);
+  //  GrahamScan.computeHull(pointsTestRandom5.toArray(new Point[pointsTestRandom5.size()]), false);
+
+    ArrayList<Point> pointsTestRandom6 = getRandomPoints(1000000);
+    //GrahamScan.computeHull(pointsTestRandom6.toArray(new Point[pointsTestRandom6.size()]), false);
 
 
   }
@@ -87,166 +110,4 @@ public class Main {
 
     return points;
   }
-
-  public static ArrayList<Point> getSortedHull(ArrayList<Point> points){
-    ArrayList<Pair> hullPairs = new ArrayList<Pair>();
-
-    long startTime = System.currentTimeMillis();
-    for(int i = 0; i < points.size(); i++){
-      Point a = points.get(i);
-      for(int j = 0; j < points.size(); j++){
-        Point b = points.get(j);
-          if(isOnHull(a,b,points)){
-            hullPairs.add(new Pair(a,b));
-          }
-      }
-    }
-
-    hullPairs = removeDuplicates(hullPairs);
-
-    ArrayList<Point> pointsSorted = new ArrayList<Point>();
-    Pair firstPair = hullPairs.get(FIRST_ELEMENT_IDX);
-
-    Point nextStart = firstPair.getSecond();
-
-    //adding first two points in counter clock-wise order
-    Point firstStart = firstPair.getFirst();
-    pointsSorted.add(firstStart);
-    pointsSorted.add(nextStart);
-
-    hullPairs.remove(firstPair);
-
-    while(!hullPairs.isEmpty()){
-    //for(int j = 0; j< hullPairs.size(); j++){
-      for(int i = 0; i < hullPairs.size(); i ++){
-        Pair tmpPair = hullPairs.get(i);
-
-        if(tmpPair.getFirst().equals(nextStart)){
-          pointsSorted.add(tmpPair.getSecond());
-          nextStart = tmpPair.getSecond();
-          hullPairs.remove(tmpPair);
-        }
-      }
-      //  System.out.println(pointsSorted);
-      //System.out.println(hullPairs);
-    }
-
-    // removing double counted last element
-    pointsSorted.remove(pointsSorted.size()-1);
-
-
-    long endTime = System.currentTimeMillis();
-
-    System.out.println("Size of point set: "+ points.size());
-    System.out.println("Size of hull: "+ pointsSorted.size());
-    System.out.println("Time to calculate hull: "+ (endTime-startTime)+ " ms");
-    //System.out.println("hull" +pointsSorted);
-    return pointsSorted;
-  }
-
-  public static void computeHull(ArrayList<Point> points){
-    //long startTime = System.currentTimeMillis();
-    ArrayList<Point> hullSorted = getSortedHull(points);
-    //long endTime = System.currentTimeMillis();
-
-    //System.out.println("Size of point set: "+ points.size());
-    //System.out.println("Size of hull: "+ hullSorted.size());
-    //System.out.println("Time to calculate hull: "+ (endTime-startTime)+ " ms");
-    //System.out.println(hullSorted);
-  }
-
-  public static boolean isOnHull(Point a, Point b, ArrayList<Point>points){
-    for(int i = 0; i < points.size(); i++){
-      Point tmp = points.get(i);
-      if(a.equals(b) || a.equals(tmp) || b.equals(tmp)){
-        if(a.equals(b)) return false;
-        continue;
-      }
-      else{
-        if(!isLeftOf(a,b,tmp)){
-        //  System.out.println(a + " , "+ b + "is not a pair on the hull: tmp: " + tmp);
-          return false;
-        }
-      }
-    }
-    return true;
-  }
-
-  public static boolean isLeftOf(Point a, Point b, Point p){
-    int aX = a.getX();
-    int aY = a.getY();
-    int bX = b.getX();
-    int bY = b.getY();
-    int pX = p.getX();
-    int pY = p.getY();
-
-    double run = (double)(bX-aX); //how far away are a and b in the x-direction?
-    // if slope == 0 (ie x=c), then return whether
-    // the point is to the left of ab
-    if(run == 0){
-      if(aY > bY){
-        return pX > aX;
-      }
-      return pX < aX;
-    }
-
-    // creating the line we use to compare p against
-    double rise = (double)(bY-aY); //delta Y for line
-    double slope = rise/run;
-
-    if(slope == 0){
-      if(aX > bX){
-        return pY <= aY;
-      }
-      return pY >= aY;
-    }
-
-    double yIntercept = (bY - (slope * bX));
-    double tmpY = (slope*pX)+yIntercept;
-    double pyDouble = (double) pY;
-    // since "left" of the line depends on the orientation of the points,
-    // there are several cases to consider
-
-    if(bX > aX && bY > aY){
-      return pyDouble - tmpY >=0 ;
-    }
-    if(bX < aX && bY < aY){
-      return pyDouble - tmpY <= 0;
-    }
-    if(bY < aY && bX > aX){
-      return pyDouble - tmpY >= 0;
-    }
-    return pyDouble - tmpY <= 0;
-  }
-
-  public static ArrayList<Pair> removeDuplicates(ArrayList<Pair> items){
-    ArrayList<Pair> tmp = new ArrayList<Pair>();
-    HashMap<String, Double> repeatsMap = new HashMap<String, Double>();
-    for(int i = 0; i < items.size(); i++){
-      Pair tmpPair = items.get(i);
-      String firstPoint = tmpPair.getFirst().toString();
-      double tmpDist = tmpPair.getFirst().distance(tmpPair.getSecond());
-      if(!repeatsMap.containsKey(firstPoint)){
-        repeatsMap.put(firstPoint, tmpDist);
-      }else{
-        if(repeatsMap.get(firstPoint) > tmpDist ){
-          repeatsMap.put(firstPoint, tmpDist);
-        }
-      }
-
-    }
-
-    for(int i = 0; i < items.size(); i++){
-      Pair tmpPair = items.get(i);
-      String firstPoint = tmpPair.getFirst().toString();
-      double tmpDist = tmpPair.getFirst().distance(tmpPair.getSecond());
-
-      if(repeatsMap.get(firstPoint)==tmpDist){
-        tmp.add(tmpPair);
-      }
-    }
-
-    return tmp;
-  }
-
 }

@@ -22,11 +22,11 @@ public class Point {
     return p.getX() == x && p.getY() == y;
   }
 
-  public double magnitude(){
-    return Math.sqrt(Math.pow(x,2)+Math.pow(y,2));
-  }
-
   public double distance(Point p){
     return Math.sqrt(Math.pow(x-p.getX(),2)+Math.pow(y-p.getY(),2));
+  }
+
+  public double magnitude(){
+    return this.distance(new Point(0,0));
   }
 }
