@@ -28,8 +28,11 @@ public class Main{
     pointsCase1.add(new Point(13,3));
     pointsCase1.add(new Point(10,13));
 
-    NaiveHull.computeHull(pointsCase1, true);
-    GrahamScan.computeHull(pointsCase1.toArray(new Point[pointsCase1.size()]), true);
+    System.out.println("points set for test case 1: " + pointsCase1);
+    NaiveHull nh1 = new NaiveHull(pointsCase1, true);
+    nh1.computeHull();
+    GrahamScan gs1 = new GrahamScan(pointsCase1.toArray(new Point[pointsCase1.size()]), true);
+    gs1.computeHull();
 
     ArrayList<Point> pointsCase2 = new ArrayList<Point>();
     pointsCase2.add(new Point(8, 5));
@@ -42,8 +45,11 @@ public class Main{
     pointsCase2.add(new Point(-4, 8));
     pointsCase2.add(new Point(3, -9));
 
-  //  NaiveHull.computeHull(pointsCase2, true);
-    //GrahamScan.computeHull(pointsCase2.toArray(new Point[pointsCase2.size()]), true);
+    System.out.println("points set for test case 2: " + pointsCase2);
+    NaiveHull nh2 = new NaiveHull(pointsCase2, true);
+    nh2.computeHull();
+    GrahamScan gs2 = new GrahamScan(pointsCase2.toArray(new Point[pointsCase2.size()]), true);
+    gs2.computeHull();
 
     ArrayList<Point> pointsCase3 = new ArrayList<Point>();
     pointsCase3.add(new Point(2, 2));
@@ -57,31 +63,37 @@ public class Main{
     pointsCase3.add(new Point(10, 1));
     pointsCase3.add(new Point(0, 0));
 
+    System.out.println("points set for test case 3: " + pointsCase3);
+    NaiveHull nh3 = new NaiveHull(pointsCase3, true);
+    nh3.computeHull();
+    GrahamScan gs3 = new GrahamScan(pointsCase3.toArray(new Point[pointsCase3.size()]), true);
+    gs3.computeHull();
 
-    //NaiveHull.computeHull(pointsCase3, true);
-    //GrahamScan.computeHull(pointsCase3.toArray(new Point[pointsCase3.size()]), true);
+    System.out.println("\n\n Random cases: \n\n");
 
     ArrayList<Point> pointsTestRandom1 = getRandomPoints(100);
-    //NaiveHull.computeHull(pointsTestRandom1, false);
-    //GrahamScan.computeHull(pointsTestRandom1.toArray(new Point[pointsTestRandom1.size()]), false);
+
+    NaiveHull nh4 = new NaiveHull(pointsTestRandom1, false);
+    nh4.computeHull();
+
+    GrahamScan gs4 = new GrahamScan(pointsTestRandom1.toArray(new Point[pointsTestRandom1.size()]),false);
+    gs4.computeHull();
 
     ArrayList<Point> pointsTestRandom2 = getRandomPoints(1000);
-    //NaiveHull.computeHull(pointsTestRandom2, false);
-    //GrahamScan.computeHull(pointsTestRandom2.toArray(new Point[pointsTestRandom2.size()]), false);
+    NaiveHull nh5 = new NaiveHull(pointsTestRandom2, false);
+    nh5.computeHull();
+    GrahamScan gs5 = new GrahamScan(pointsTestRandom2.toArray(new Point[pointsTestRandom2.size()]),false);
+    gs5.computeHull();
 
     ArrayList<Point> pointsTestRandom3 = getRandomPoints(10000);
-    //NaiveHull.computeHull(pointsTestRandom3, false);
-    //GrahamScan.computeHull(pointsTestRandom3.toArray(new Point[pointsTestRandom3.size()]), false);
+    NaiveHull nh6 = new NaiveHull(pointsTestRandom3, false);
+    nh6.computeHull();
+    GrahamScan gs6 = new GrahamScan(pointsTestRandom3.toArray(new Point[pointsTestRandom3.size()]),false);
+    gs6.computeHull();
 
-    ArrayList<Point> pointsTestRandom4 = getRandomPoints(20000);
-    //NaiveHull.computeHull(pointsTestRandom4, false);
-  //  GrahamScan.computeHull(pointsTestRandom4.toArray(new Point[pointsTestRandom4.size()]), false);
-
-    ArrayList<Point> pointsTestRandom5 = getRandomPoints(100000);
-  //  GrahamScan.computeHull(pointsTestRandom5.toArray(new Point[pointsTestRandom5.size()]), false);
-
-    ArrayList<Point> pointsTestRandom6 = getRandomPoints(1000000);
-    //GrahamScan.computeHull(pointsTestRandom6.toArray(new Point[pointsTestRandom6.size()]), false);
+    ArrayList<Point> pointsTestRandom4 = getRandomPoints(1000000);
+    GrahamScan gs7 = new GrahamScan(pointsTestRandom4.toArray(new Point[pointsTestRandom4.size()]),false);
+    gs7.computeHull();
 
 
   }
@@ -90,7 +102,6 @@ public class Main{
     ArrayList<Point> points = new ArrayList<Point>();
     HashMap<String, Boolean> repeatsMap = new HashMap<String, Boolean>();
 
-    //TODO: ensure all points are unique
     //https://stackoverflow.com/questions/9879258/how-can-i-generate-random-points-on-a-circles-circumference-in-javascript
     int i = 0;
     while(i < numArgs){
@@ -104,10 +115,8 @@ public class Main{
         points.add(tmpPoint);
         repeatsMap.put(tmpPointStr,true);
       }
-      //System.out.println(i);
 
     }
-
     return points;
   }
 }
